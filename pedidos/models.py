@@ -11,10 +11,10 @@ class Categoria(models.Model):
         def __str__(self):
             return self.nombre
 
-class Producto(models.Model):
+class producto(models.Model):
         nombre = models.CharField(max_length=100)
         precio = models.IntegerField()
-        Categoria = models.ForeinKey(
+        categoria = models.ForeignKey(
             Categoria, 
             on_delete=models.PROTECT,
             related_name="productos",
@@ -50,7 +50,7 @@ class Detallepedido(models.Model):
         pedido, on_delete=models.CASCADE, 
         relate_name="detalles")
     producto = models.ForeignKey(
-        Producto, on_delte=models.PROTECT)
+        producto, on_delte=models.PROTECT)
     cantidad = models.IntegerField(default=1)
     subtotal = models.IntegerFiled()
 
