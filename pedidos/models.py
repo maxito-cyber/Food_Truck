@@ -11,13 +11,49 @@ class Categoria(models.Model):
         def __str__(self):
             return self.nombre
 
-    class Producto(models.Model):
+class Producto(models.Model):
         nombre = models.CharField(max_length=100)
         precio = models.IntegerField()
-        
+        Categoria = models.ForeinKey(
+            Categoria, 
+            on_delete=models.PROTECT,
+            related_name="productos",
+        )
 
         def __str__(self):
             return self.nombre 
 
 
+class Cliente(models.Model):
+        nombre = models.CharField(max_length=100)
+        telefono = models.CharField(max_length=20, blank=True)
 
+class pedido(models.Model):
+        ESTADOS = [
+            ("pendiente", "pendiente"),
+            ("entregado", "entregado"),
+        ]
+        
+        cliente = models.ForeignKey(
+            Cliente, on_delete=models.PROTECT,
+            related_name="pedidos")
+        fecha = models.DateTimeField(
+            auto_now_add=True)
+        estado = models.CharField(
+            max_lenght=20, choices=ESTADOS)
+
+        def __str___(self):
+            return f"pedido {self.id}"
+
+class Detallepedido(models.Model):
+    pedido = models.ForeignKey(
+        pedido, on_delete=models.CASCADE, 
+        relate_name="detalles")
+    producto = models.ForeignKey(
+        Producto, on_delte=models.PROTECT)
+    cantidad = models.IntegerField(default=1)
+    subtotal = models.IntegerFiled()
+
+    def __str__(self):
+        return f"(self.cantidad) * (self.producto)"
+        
